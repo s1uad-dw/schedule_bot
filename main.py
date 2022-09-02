@@ -17,6 +17,8 @@ async def send_welcome(message: types.Message):
 async def schedule(message: types.Message):
     quantity = schedule_generate.get_screens()
     album = types.MediaGroup()
+    if type(i) != list:
+        await message.answer(i)
     for i in range(0, quantity):
         album.attach_photo(photo=types.InputFile(f'./screenshots/day{i}.png'))
     await message.answer_media_group(media=album)
