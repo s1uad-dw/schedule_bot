@@ -1,4 +1,5 @@
 import time
+import os
 from selenium import webdriver
 from PIL import Image
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -8,8 +9,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 def get_screens():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    driver.get('https://drive.google.com/drive/folders/1Mq-Yb-NzAPZmzUuonMfK68hbA-NGXJcq?lfhs=2');
+    op = webdriver.ChromeOptions()
+    op.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    op.add_argument("--headless")
+    op.add_argument("--no-sandbox")
+    op.add_argument("--disable-dev-sh-usage")
+
+    driver = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'), chrome_options=op)
+    driver.get('https://drive.google.com/drive/folders/1Mq-Yb-NzAPZmzUuonMfK68hbA-NGXJcq?lfhs=2')
     files = driver.find_elements(by=By.CLASS_NAME, value='pmHCK')
     i = 0
     for file in files:
@@ -25,3 +32,4 @@ def get_screens():
         i+=1
     driver.quit()
     return i
+get_screens()
